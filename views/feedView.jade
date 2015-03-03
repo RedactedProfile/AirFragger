@@ -3,7 +3,6 @@ extends layout
 mixin card_account(data)
   .row
     .large-2.columns.small-3
-      //img(src='http://placehold.it/80x80&text=[img]')
       a(href="/u/#{data.slug}"): img(src=getGravatar(data.email, 53))
     .large-10.columns
       p
@@ -11,7 +10,7 @@ mixin card_account(data)
           a(href="/u/#{data.slug}")= data.username 
          |  just joined!
         br/
-        | #{renderDate(data.dateAdded)}
+        | #{renderFromNow(data.dateAdded)}
         br/
         p Say hi!
       ul.inline-list
@@ -19,6 +18,34 @@ mixin card_account(data)
           a(href='') Reply
         li
           a(href='') Share
+
+mixin profile_panel(user)
+  .row
+    .large-3.columns
+      .panel
+        //a(href='#')
+        //  img(src='http://placehold.it/300x240&text=[img]')
+        h5
+          a(href='#') Your Name
+        .section-container.vertical-nav(data-section='', data-options='deep_linking: false; one_up: true')
+          section.section
+            h5.title
+              a(href='#') Section 1
+          section.section
+            h5.title
+              a(href='#') Section 2
+          section.section
+            h5.title
+              a(href='#') Section 3
+          section.section
+            h5.title
+              a(href='#') Section 4
+          section.section
+            h5.title
+              a(href='#') Section 5
+          section.section
+            h5.title
+              a(href='#') Section 6
 
 block body
   .row
@@ -28,10 +55,17 @@ block body
     .row
       .large-3.columns
         .panel
-          a(href='#')
-            img(src='http://placehold.it/300x240&text=[img]')
-          h5
-            a(href='#') Your Name
+          //a(href='#')
+          //  img(src='http://placehold.it/300x240&text=[img]')
+          //h5
+          //  a(href='#') Your Name
+          //if 
+          section.section
+            h5.title
+              a(href='/login') Login
+          section.section
+            h5.title
+              a(href='/register') Register
           .section-container.vertical-nav(data-section='', data-options='deep_linking: false; one_up: true')
             section.section
               h5.title
@@ -55,7 +89,7 @@ block body
         for update in updates
           case update.type 
             when "account"
-              +card_account(updates[0].data)
+              +card_account(update.data)
               hr
         hr
         hr

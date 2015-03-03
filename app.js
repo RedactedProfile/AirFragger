@@ -17,6 +17,12 @@ mongoose.connect('mongodb://localhost:27017/airfragger', function(error) {
         console.log(error);
     }
 });
+var expressSession = require('express-session');
+app.use(expressSession({
+    key: 'session',
+    secret: 'a1rFraGg3RS3Cr3t',
+    store: require('mongoose-session')(mongoose)
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -86,9 +92,12 @@ app.locals.renderDate = function(date, format) {
 };
 
 app.locals.renderFromNow = function(date) {
-  console.log(date);
   var moment = require('moment');
   return moment(date, "X").fromNow();
+};
+
+app.locals.getSession = function() {
+  console.log(expressSession);
 };
 
 
