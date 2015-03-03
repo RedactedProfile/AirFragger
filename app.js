@@ -65,4 +65,31 @@ app.use(function(err, req, res, next) {
 });
 
 
+
+app.locals.getGravatar = function(email, size) {
+  var md5 = require('MD5');
+  if(typeof size == "undefined" || !size)
+    size = 40;
+
+  var emailHash = md5(email).toLowerCase();
+  var defaultAvatar = encodeURIComponent();
+  return "http://www.gravatar.com/avatar/" + emailHash + "?s=" + size;
+};
+
+app.locals.renderDate = function(date, format) {
+  var moment = require('moment');
+
+  if(typeof format == "undefined" || !format)
+    format = "MM/DD/YYYY";
+
+  return moment(date, 'X').format(format) ;
+};
+
+app.locals.renderFromNow = function(date) {
+  console.log(date);
+  var moment = require('moment');
+  return moment(date, "X").fromNow();
+};
+
+
 module.exports = app;

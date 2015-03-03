@@ -1,5 +1,25 @@
 extends layout
 
+mixin card_account(data)
+  .row
+    .large-2.columns.small-3
+      //img(src='http://placehold.it/80x80&text=[img]')
+      a(href="/u/#{data.slug}"): img(src=getGravatar(data.email, 53))
+    .large-10.columns
+      p
+        strong
+          a(href="/u/#{data.slug}")= data.username 
+         |  just joined!
+        br/
+        | #{renderDate(data.dateAdded)}
+        br/
+        p Say hi!
+      ul.inline-list
+        li
+          a(href='') Reply
+        li
+          a(href='') Share
+
 block body
   .row
       .large-12.columns
@@ -32,6 +52,14 @@ block body
               h5.title
                 a(href='#') Section 6
       .large-6.columns
+        for update in updates
+          case update.type 
+            when "account"
+              +card_account(updates[0].data)
+              hr
+        hr
+        hr
+        hr
         .row
           .large-2.columns.small-3
             img(src='http://placehold.it/80x80&text=[img]')

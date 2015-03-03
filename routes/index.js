@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var moment = require('moment');
 
 var Account = require('../models/account'),
     Company = require('../models/company'),
@@ -32,6 +33,7 @@ router.get('/', function(req, res) {
       var item = items[_i];
       updates.push({
         type: type,
+        date: item.dateAdded,
         data: item
       });
     }
@@ -41,9 +43,9 @@ router.get('/', function(req, res) {
       render();
   };
 
-  var accountsPromise = Account.find({}).exec();
-  var companiesPromise = Company.find({}).exec();
-  var statusesPromise = Status.find({}).exec();
+  var accountsPromise = Account.find({}).sort('-dateAdded').exec();
+  var companiesPromise = Company.find({}).sort('-dateAdded').exec();
+  var statusesPromise = Status.find({}).sort('-dateAdded').exec();
 
   accountsPromise.then(function(accounts) {
     process("account", accounts);
@@ -56,6 +58,8 @@ router.get('/', function(req, res) {
   });
 
   var render = function() {
+    updates.sort(function(a, b){return a.date-b.date});
+
     console.log(updates);
     res.render('index', { title: 'Express', updates: updates });
   };
@@ -63,7 +67,6 @@ router.get('/', function(req, res) {
 });
 
 router.get('/setup', function(req, res) {
-    var moment = require('moment');
     var md5 = require('MD5');
 
     var acc = new Account({
