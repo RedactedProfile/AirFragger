@@ -4,25 +4,33 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var io = require('socket.io').listen(3001);
 
-var mongoose = require('mongoose');
+// Reducing socket.io log (debug) statements
+io.set('log level', 2);
+
+//var mongoose = require('mongoose');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
 
+/*
 mongoose.connect('mongodb://localhost:27017/airfragger', function(error) {
     if(error) {
         console.log(error);
     }
 });
+*/
 var expressSession = require('express-session');
+/*
 app.use(expressSession({
     key: 'session',
     secret: 'a1rFraGg3RS3Cr3t',
     store: require('mongoose-session')(mongoose)
 }));
+*/
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -99,6 +107,14 @@ app.locals.renderFromNow = function(date) {
 app.locals.getSession = function() {
   console.log(expressSession);
 };
+
+
+var model = {};
+var clients = [];
+// socket.io
+io.sockets.on('connection', function(socket){
+    console.log("a user connected");
+});
 
 
 module.exports = app;

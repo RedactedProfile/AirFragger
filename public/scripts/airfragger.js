@@ -46175,6 +46175,53 @@ string.js - Copyright (C) 2012-2014, JP Richardson <jprichardson@gmail.com>
 }).call(this);
 
 (function() {
-
+  angular.module('airfragger', ['ngResource']).factory('FeedApi', [
+    '$resource', function($resource) {
+      var Feed, get_all;
+      Feed = $resource('/api/feed/:id', {
+        id: '@id'
+      }, {
+        byType: {
+          url: '/api/feed/type/:type',
+          isArray: true,
+          method: 'GET'
+        }
+      });
+      get_all = function(next) {
+        Feed.query(function(items) {
+          var i, item, len, out;
+          out = [];
+          for (i = 0, len = items.length; i < len; i++) {
+            item = items[i];
+            out.push(item);
+          }
+          next(out);
+        });
+      };
+      return {
+        getAll: get_all,
+        FeedAPI: Feed
+      };
+    }
+  ]).directive('feedAccount', function() {
+    return {
+      templateUrl: '/partials/directives/feed_account.html',
+      replace: true,
+      scope: {
+        feed: '@'
+      },
+      controller: function($scope) {
+        $scope.data = $scope.feed;
+      }
+    };
+  }).controller('FeedController', [
+    '$scope', 'FeedApi', function($scope, FeedApi) {
+      $scope.feed = [];
+      FeedApi.getAll(function(items) {
+        $scope.feed = items;
+        console.log(items);
+      });
+    }
+  ]);
 
 }).call(this);

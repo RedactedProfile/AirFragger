@@ -1,0 +1,42 @@
+<div class="large-12 columns">
+    <div class="large-2 columns small-3">
+        <a ng-href="/u/{{ data.slug }}"><img ng-src="data.email" /></a>
+        <!--
+              .large-2.columns.small-3
+                a(ng-href="/u/{{ item.data.slug }}"): img(ng-src="item.data.email")
+              .large-10.columns
+                p
+                  strong
+                    a(ng-href="/u/{{ item.data.slug }}") {{ item.data.username }}
+                  |  just joined!
+                  br/
+                  | {{ item.data.dateAdded }}
+                  br/
+                  p Say hi!
+                ul.inline-list
+                  li
+                    a(href='') Reply
+                  li
+                    a(href='') Share
+    -->
+    </div>
+    <div class="large-10 columns">
+
+        <p>
+            <strong>
+                <a ng-href="/u/{{ data.slug }}" ng-bind="data.username"></a> just joined!
+            </strong><br />
+            {{ data.dateAddded }}<br />
+            <br />
+            <p>Say hi!</p>
+        </p>
+        <ul class="inline-list">
+            <li>
+                <a href="">Reply</a>
+            </li>
+            <li>
+                <a href="">Share</a>
+            </li>
+        </ul>
+    </div>
+</div>

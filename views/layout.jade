@@ -1,8 +1,9 @@
 doctype html
-html
+html(ng-app="airfragger")
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/airfragger.css')
+    sciprt(type='text/javascript', src='http://localhost:3001/socket.io/socket.io.js')
     script(type='text/javascript', src='/scripts/airfragger.js')
   body
     block body

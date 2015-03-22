@@ -85,7 +85,10 @@ block body
             section.section
               h5.title
                 a(href='#') Section 6
-      .large-6.columns
+      .large-6.columns(ng-controller="FeedController")
+        .row(ng-repeat="item in feed")
+          feed-account(ng-if="item.type == 'account'", feed="item.data")
+      //
         for update in updates
           case update.type 
             when "account"
@@ -157,6 +160,8 @@ block body
           img(src='http://placehold.it/300x440&text=[ad]')
         p
           img(src='http://placehold.it/300x440&text=[ad]')
+
+
     footer.row
       .large-12.columns
         hr

@@ -93,4 +93,46 @@ router.get('/setup', function(req, res) {
     //acc.save();
 });
 
+router.get('/api/feed/:feedId?', function(req, res) {
+    var updates = [];
+    var processedTypes = 0;
+    var totalTypes = 3;
+
+    var process = function(type, items) {
+
+        for(var _i = 0; _i < items.length; _i++) {
+            var item = items[_i];
+            updates.push({
+                type: type,
+                date: item.dateAdded,
+                data: item
+            });
+        }
+
+        processedTypes++;
+        if(processedTypes >= totalTypes)
+            render();
+    };
+
+    var accountsPromise = Account.find({}).sort('-dateAdded').exec();
+    var companiesPromise = Company.find({}).sort('-dateAdded').exec();
+    var statusesPromise = Status.find({}).sort('-dateAdded').exec();
+
+    accountsPromise.then(function(accounts) {
+        process("account", accounts);
+    });
+    companiesPromise.then(function(companies) {
+        process("company", companies);
+    });
+    statusesPromise.then(function(statuses) {
+        process("status", statuses);
+    });
+
+    var render = function() {
+        updates.sort(function(a, b){return a.date-b.date});
+
+        res.json(updates);
+    };
+});
+
 module.exports = router;
